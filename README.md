@@ -1,1 +1,1 @@
-# Play.Inventoty
+# Play.Inventory microservice
