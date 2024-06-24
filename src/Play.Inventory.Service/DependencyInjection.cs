@@ -38,8 +38,24 @@ public static class DependencyInjection
                 serviceProvider.GetService<ILogger<CatalogClient>>()?
                     .LogWarning($"Delaying for {timespan.TotalSeconds} seconds, then making retry {retryAttempt}");
             }
-        ))
-        .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(1)));
+        )) //retry policy
+        .AddTransientHttpErrorPolicy(builder => builder.Or<TimeoutRejectedException>().CircuitBreakerAsync(
+            3,
+            TimeSpan.FromSeconds(15),
+            onBreak: (outcome, timespan) =>
+            {
+                var serviceProvider = services.BuildServiceProvider();
+                serviceProvider.GetService<ILogger<CatalogClient>>()?
+                    .LogWarning($"Delaying for {timespan.TotalSeconds} seconds...");
+            },
+            onReset: () =>
+            {
+                var serviceProvider = services.BuildServiceProvider();
+                serviceProvider.GetService<ILogger<CatalogClient>>()?
+                    .LogWarning("Closing the circuit...");
+            }
+        )) // circuit breaker
+        .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(1))); //timeouts
         return services;
     }
 }
