@@ -18,6 +18,11 @@ public static class DependencyInjection
             var database = serviceProvider.GetService<IMongoDatabase>();
             return new MongoRepository<InventoryItem>(database);
         });
+        services.AddSingleton<IRepository<CatalogItem>>(static serviceProvider =>
+        {
+            var database = serviceProvider.GetService<IMongoDatabase>();
+            return new MongoRepository<CatalogItem>(database);
+        });
         return services;
     }
     public static IServiceCollection AddHttpCatalogClient(this IServiceCollection services)

@@ -1,3 +1,4 @@
+using Play.Common.MassTransitRabbitMq;
 using Play.Common.MongoDb;
 using Play.Inventory.Service;
 
@@ -8,6 +9,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMongodbSettings(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddHttpCatalogClient();
+builder.Services.AddMassTransitWithRabbitMq(builder.Configuration);
 
 var app = builder.Build();
 

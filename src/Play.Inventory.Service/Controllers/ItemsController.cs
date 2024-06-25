@@ -22,11 +22,9 @@ public class ItemsController : ControllerBase
     public async Task<IActionResult> GetAsync(Guid userId)
     {
         var catalogItems = await _catalogClient.GetCatalogItemsAsymc();
-        if (!catalogItems.Any())
-            return NotFound();
+        if (!catalogItems.Any()) return NotFound();
         var inventoryItemsByUserId = await _inventoryItemRepository.GetAllAsync(item => item.UserId == userId);
-        if (inventoryItemsByUserId is null)
-            return NotFound();
+        if (inventoryItemsByUserId is null) return NotFound();
         var inventoryItemDto = inventoryItemsByUserId.Select(inventoryItem =>
         {
             var catalogItem = catalogItems.Single(catalogItem => catalogItem.Id == inventoryItem.CatalogItemId);
