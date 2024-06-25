@@ -19,7 +19,7 @@ public sealed class CatalogItemCreatedConsumer : IConsumer<CatalogItemCreated>
         var message = context.Message;
         var item = await _catalogItemRepository.GetAsync(message.ItemId);
 
-        if (item is null) return;
+        if (item is not null) return;
 
         var catalogItem = CatalogItem.NewCatalogItem(
             catalogItemId: message.ItemId,

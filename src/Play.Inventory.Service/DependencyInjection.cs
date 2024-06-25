@@ -16,12 +16,12 @@ public static class DependencyInjection
         services.AddSingleton<IRepository<InventoryItem>>(static serviceProvider =>
         {
             var database = serviceProvider.GetService<IMongoDatabase>();
-            return new MongoRepository<InventoryItem>(database);
+            return new MongoRepository<InventoryItem>(database, $"{nameof(InventoryItem)}s");
         });
         services.AddSingleton<IRepository<CatalogItem>>(static serviceProvider =>
         {
             var database = serviceProvider.GetService<IMongoDatabase>();
-            return new MongoRepository<CatalogItem>(database);
+            return new MongoRepository<CatalogItem>(database, $"{nameof(CatalogItem)}s");
         });
         return services;
     }
