@@ -27,7 +27,7 @@ public sealed class CatalogItemUpdatedConsumer : IConsumer<CatalogItemUpdated>
         }
         else
         {
-            catalogItemExisting.SetName(message.name);
+            catalogItemExisting.SetName(message.Name);
             catalogItemExisting.SetDescription(message.Description);
             await _catalogItemRepository.UpdateAsync(catalogItemExisting);
         }

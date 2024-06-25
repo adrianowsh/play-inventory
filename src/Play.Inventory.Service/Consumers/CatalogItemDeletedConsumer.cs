@@ -17,6 +17,6 @@ public sealed class CatalogItemDeletedConsumer : IConsumer<CatalogItemDeleted>
         var message = context.Message;
         var catalogItemExisting = await _catalogItemRepository.GetAsync(message.ItemId);
         if (catalogItemExisting is null) return;
-        await _catalogItemRepository.DeleAsync(catalogItemExisting);
+        await _catalogItemRepository.RemoveAsync(catalogItemExisting.Id);
     }
 }
