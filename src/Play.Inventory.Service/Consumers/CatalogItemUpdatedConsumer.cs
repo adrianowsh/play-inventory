@@ -15,7 +15,9 @@ public sealed class CatalogItemUpdatedConsumer : IConsumer<CatalogItemUpdated>
     public async Task Consume(ConsumeContext<CatalogItemUpdated> context)
     {
         var message = context.Message;
-        var catalogItemExisting = await _catalogItemRepository.GetAsync(message.ItemId);
+        var catalogItemExisting = await _catalogItemRepository.GetAsync(
+            c => c.CatalogItemId == message.ItemId);
+
         if (catalogItemExisting is null)
         {
             var catalogItem = CatalogItem.NewCatalogItem(
