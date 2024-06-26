@@ -44,7 +44,7 @@ public class ItemsController : ControllerBase
     {
         var inventoryItem = await _inventoryItemRepository.GetAsync(
             item => item.UserId == grantItemsDto.UserId &&
-            grantItemsDto.CatalogItemId == grantItemsDto.CatalogItemId
+            item.CatalogItemId == grantItemsDto.CatalogItemId
         );
         if (inventoryItem is null)
         {
