@@ -63,4 +63,15 @@ public static class DependencyInjection
         .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(1))); //timeouts
         return services;
     }
+
+    public static IApplicationBuilder ConfigureCors(this IApplicationBuilder app, IConfiguration configuration)
+    {
+        app.UseCors(builder =>
+        {
+            builder.WithOrigins(configuration["AllowedOrigin"])
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+        return app;
+    }
 }
